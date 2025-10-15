@@ -3,19 +3,18 @@ import formidable from "formidable";
 import fs from "fs";
 
 export const config = {
-  api: {
-    bodyParser: false, // necesario para manejar archivos
-  },
+  api: { bodyParser: false },
 };
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).send("Método no permitido");
-  }
+  if (req.method !== "POST") return res.status(405).send("Método no permitido");
 
   const form = formidable({ multiples: true });
 
   form.parse(req, async (err, fields, files) => {
+    console.log("Campos recibidos:", fields);
+    console.log("Archivos recibidos:", files);
+
     if (err) return res.status(500).send("Error al procesar archivos.");
 
     try {
