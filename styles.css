@@ -18,11 +18,11 @@ body {
     padding-top: 50px; 
     
     /* Fondo con la imagen de focos */
-    background-image: url('img/image_5804c0.png'); /* RUTA DE TU IMAGEN */
+    background-image: url('Images/ImagenFondo.jpg'); /* RUTA DE TU IMAGEN */
     background-position: center top; 
-    background-size: 150%; 
-    background-repeat: no-repeat;
+    background-size: 100% auto; 
     background-attachment: scroll; 
+    background-repeat: repeat-y;
     
     position: relative; 
     z-index: 1; 
