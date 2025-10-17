@@ -1,68 +1,289 @@
 * { box-sizing: border-box; }
+:root {
+    /* Colores del Tema Pizarra */
+    --primary-color: #fdd835; /* Amarillo mostaza para títulos */
+    --secondary-color: #66bb6a; /* Verde suave para precios y acentos */
+    --background-color: #212121; /* Fondo oscuro de pizarra */
+    --surface-color: #333333; /* Color de las tarjetas/bloques */
+    --text-color: #ffffff; /* Texto principal blanco */
+    --detail-color: #bdbdbd; /* Gris claro para texto secundario */
+}
+
 body {
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  background-color: #fafafa;
-  color: #333;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding-top: 50px; 
+    
+    /* Fondo con la imagen de focos */
+    background-image: url('img/image_5804c0.png'); /* RUTA DE TU IMAGEN */
+    background-position: center top; 
+    background-size: 150%; 
+    background-repeat: no-repeat;
+    background-attachment: scroll; 
+    
+    position: relative; 
+    z-index: 1; 
 }
 
+/* --- CAPA DE OSCURECIMIENTO (OVERLAY) --- */
+body::after {
+    content: '';
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    z-index: -1; 
+    pointer-events: none; 
+}
+
+
+/* -------------------------------------- */
+/* --- HEADER Y NAVEGACIÓN (FIJOS) --- */
+/* -------------------------------------- */
 header {
-  background-color: #b71c1c;
-  color: white;
-  text-align: center;
-  padding: 1.5rem 1rem;
+    background-color: #000000; 
+    color: var(--primary-color);
+    text-align: center;
+    padding: 1rem 1rem 0.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
-h1 { margin: 0; font-size: 1.8rem; }
-main { padding: 1rem; }
+h1 { margin: 0; font-size: 1.5rem; }
 
-.categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+/* Barra de Navegación del Menú */
+.main-nav {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    background-color: var(--surface-color); 
+    border-bottom: 1px solid #444;
+    padding: 0.5rem 0.5rem;
+    position: sticky;
+    top: 60px;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -webkit-overflow-scrolling: touch; 
 }
 
-.category {
-  background-color: white;
-  border-radius: 10px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.nav-btn {
+    flex: 0 0 auto; 
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--detail-color); 
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
 }
 
-.category h3 { color: #b71c1c; }
+.nav-btn.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
 
+/* -------------------------------------- */
+/* --- CONTENIDO PRINCIPAL Y MENÚ --- */
+/* -------------------------------------- */
+main { padding: 0 0.5rem; }
+.category-content { padding: 1rem 0.5rem 0; }
+.hidden { display: none !important; }
+
+/* Estilos de los Grupos/Subcategorías (Títulos de Sección) */
+.group-title {
+    color: var(--primary-color); 
+    font-size: 1.6rem; 
+    margin: 1.5rem 0 0.8rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.3rem;
+    font-weight: 700;
+}
+
+/* Contenedor de Productos (Grid Responsivo de Bloques) */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem; 
+    padding-bottom: 2rem;
+}
+
+/* -------------------------------------------------------------------- */
+/* --- DISEÑO: BLOQUE DE GRUPO (LISTA + IMAGEN) --- */
+/* -------------------------------------------------------------------- */
+.group-block {
+    background-color: var(--surface-color); 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    
+    display: flex; 
+    gap: 1rem;
+    align-items: flex-start; 
+}
+
+/* Estilos de la Columna de Lista (5 Productos) */
+.product-list-col {
+    flex: 2; 
+    min-width: 0;
+}
+
+.product-list-col h3 {
+    color: var(--detail-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.product-list {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 0.3rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2); 
+    padding-bottom: 0.3rem;
+}
+
+.product-name {
+    color: var(--text-color); 
+    font-size: 0.95rem;
+    font-weight: 400;
+    flex-grow: 1;
+    margin-right: 1rem;
+}
+
+.product-price {
+    color: var(--secondary-color); 
+    font-size: 1rem;
+    font-weight: 700;
+    white-space: nowrap; 
+}
+
+/* Estilos de la Columna de Imagen */
+.product-image-col {
+    flex: 1; 
+    min-width: 100px; 
+    max-width: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.product-image-col img,
+.product-image-col div { 
+    width: 100%;
+    height: 120px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--detail-color);
+    font-size: 0.8rem;
+    text-align: center;
+    background-color: #444; 
+}
+
+/* -------------------------------------- */
+/* --- FORMULARIO DE FACTURACIÓN --- */
+/* -------------------------------------- */
+#facturacion {
+    padding: 1rem;
+}
+#facturacion h2 {
+    color: var(--secondary-color); 
+    text-align: center;
+}
 form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-top: 1rem;
-  background: white;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    background: var(--surface-color); 
+    color: var(--text-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-input, button {
-  padding: 0.8rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+label {
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--detail-color);
 }
 
-button {
-  background-color: #b71c1c;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s;
+input[type="email"], input[type="file"] {
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #555; 
+    background-color: #444; 
+    color: var(--text-color);
+    font-size: 1rem;
+    width: 100%;
 }
 
-button:hover { background-color: #d32f2f; }
+button[type="submit"] {
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    background-color: var(--secondary-color); 
+    color: #333; 
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 1rem;
+}
 
+button[type="submit"]:hover { background-color: #4CAF50; }
+
+#mensaje {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* -------------------------------------- */
+/* --- PIE DE PÁGINA Y FACTURACIÓN LINK --- */
+/* -------------------------------------- */
 footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #b71c1c;
-  color: white;
-  margin-top: 2rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: #000000; 
+    color: var(--detail-color);
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Estilo para el Enlace de Facturación (Texto Simple) */
+.facturacion-link {
+    color: var(--primary-color); 
+    font-size: 1rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+    padding-bottom: 5px; 
+    border-bottom: 1px solid var(--primary-color); 
+    transition: opacity 0.2s; 
+}
+
+.facturacion-link:hover {
+    opacity: 0.8; 
 }

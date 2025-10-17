@@ -1,83 +1,55 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Restaurante Michessanfa</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú MichesSanfa</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>Restaurante Michessanfa</h1>
-    <p>Menú y facturación</p>
-  </header>
+    <header>
+        <h1>Menú MichesSanfa</h1>
+    </header>
 
-  <main>
-    <!-- MENÚ -->
-    <section id="menu">
-      <h2>Menú</h2>
-      <div class="categories">
-        <div class="category">
-          <h3>🍽️ Comida</h3>
-          <ul>
-            <li>Tacos al pastor - $25</li>
-            <li>Quesadillas - $30</li>
-            <li>Enchiladas verdes - $65</li>
-          </ul>
-        </div>
-        <div class="category">
-          <h3>🥤 Bebidas</h3>
-          <ul>
-            <li>Refresco - $20</li>
-            <li>Agua de horchata - $25</li>
-            <li>Cerveza - $40</li>
-          </ul>
-        </div>
-        <div class="category">
-          <h3>🍸 Coctelería</h3>
-          <ul>
-            <li>Margarita - $90</li>
-            <li>Mojito - $85</li>
-            <li>Piña colada - $80</li>
-          </ul>
-        </div>
-        <div class="category">
-          <h3>🍰 Postres</h3>
-          <ul>
-            <li>Pastel de chocolate - $50</li>
-            <li>Flan napolitano - $45</li>
-            <li>Helado artesanal - $35</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    <nav class="main-nav">
+        <button class="nav-btn active" data-category="comida">Comida</button>
+        <button class="nav-btn" data-category="bebidas">Bebidas</button>
+        <button class="nav-btn" data-category="cocteleria">Coctelería</button>
+        <button class="nav-btn" data-category="postres">Postres</button>
+    </nav>
 
-    <!-- FORMULARIO FACTURACIÓN -->
-    <section id="facturacion">
-      <h2>Facturación</h2>
-      <form id="facturaForm" enctype="multipart/form-data">
-        <label for="email">Correo electrónico:</label>
-        <input type="email" id="email" name="email" required>
+    <main id="content-area">
+        <section id="menu-container"></section>
 
-        <label for="ticket">Ticket del restaurante:</label>
-        <input type="file" id="ticket" name="ticket" accept=".jpg,.png,.pdf" required>
+        <section id="facturacion" class="hidden">
+            <h2>Solicitud de Facturación</h2>
+            <form id="facturaForm" enctype="multipart/form-data">
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
 
-        <label for="voucher">Voucher de pago:</label>
-        <input type="file" id="voucher" name="voucher" accept=".jpg,.png,.pdf" required>
+                <label for="ticket">Ticket del restaurante:</label>
+                <input type="file" id="ticket" name="ticket" accept=".jpg,.png,.pdf" required>
 
-        <label for="constancia">Constancia de situación fiscal:</label>
-        <input type="file" id="constancia" name="constancia" accept=".jpg,.png,.pdf" required>
+                <label for="voucher">Voucher de pago:</label>
+                <input type="file" id="voucher" name="voucher" accept=".jpg,.png,.pdf" required>
 
-        <button type="submit">Enviar para facturación</button>
-      </form>
-      <p id="mensaje"></p>
-    </section>
-  </main>
+                <label for="constancia">Constancia de situación fiscal:</label>
+                <input type="file" id="constancia" name="constancia" accept=".jpg,.png,.pdf" required>
 
-  <footer>
-    <p>© 2025 Restaurante Michessanfa</p>
-  </footer>
+                <button type="submit">Enviar para facturación</button>
+            </form>
+            <p id="mensaje"></p>
+        </section>
+    </main>
 
-  <script src="script.js"></script>
+    <footer>
+        <span class="facturacion-link" data-category="facturacion">
+            Facturación 🧾 (Solicita tu CFDI)
+        </span>
+        <p>© 2025 Restaurante Michessanfa</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
