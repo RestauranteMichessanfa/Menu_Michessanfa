@@ -66,7 +66,7 @@ h1.titulo {
     text-transform: uppercase;
 }
 
-/* --- NAVEGACIÓN FIJA (EFECTO PREMIUM GLASSMORPHISM) --- */
+/* --- NAVEGACIÓN FIJA --- */
 .main-nav {
     display: flex;
     justify-content: space-between; 
@@ -120,7 +120,6 @@ h1.titulo {
 
 /* --- CONTENIDO PRINCIPAL Y CUADRÍCULAS --- */
 main {
-    /* CORRECCIÓN: Se redujo el padding superior de 1.5rem a 0.5rem para eliminar el hueco */
     padding: 0.5rem 1rem 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -140,16 +139,15 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* CORRECCIÓN: Títulos de pestaña centrados y con menos margen superior */
 .group-title {
     font-family: var(--font-headings);
     color: var(--text-primary);
     font-size: 1.8rem;
-    margin: 0.5rem 0 1.5rem 0; /* Se redujo el margen superior de 2rem a 0.5rem */
+    margin: 0.5rem 0 1.5rem 0; 
     font-weight: 500;
     display: flex;
     align-items: center;
-    justify-content: center; /* Esto centra el texto y el icono */
+    justify-content: center;
     text-align: center;
     gap: 0.8rem;
     letter-spacing: 0.5px;
@@ -233,6 +231,8 @@ main {
     align-items: center;
     padding: 0.7rem 0;
     border-bottom: 1px dotted rgba(255, 255, 255, 0.1);
+    /* Se agregó cursor pointer por si el usuario está en PC */
+    cursor: pointer;
 }
 
 .product-item:last-child {
@@ -245,6 +245,8 @@ main {
     font-weight: 300;
     padding-right: 1rem;
     letter-spacing: 0.2px;
+    /* Evita que el texto se seleccione accidentalmente en celulares */
+    user-select: none; 
 }
 
 .product-item span:last-child {
@@ -253,6 +255,7 @@ main {
     font-size: 0.95rem;
     white-space: nowrap;
     letter-spacing: 0.5px;
+    user-select: none;
 }
 
 /* --- ESTRUCTURA MULTI-PRECIO (TABULADA) --- */
@@ -281,19 +284,15 @@ main {
 .cols-2 { grid-template-columns: 2fr 1fr 1fr; }
 .cols-3 { grid-template-columns: 1.4fr 1fr 1fr 1fr; }
 
-.product-list-header .col-h {
-    text-align: right;
-}
-
-.product-list-header .col-h:first-child {
-    text-align: left;
-}
+.product-list-header .col-h { text-align: right; }
+.product-list-header .col-h:first-child { text-align: left; }
 
 .product-item.grid-prices .product-name {
     color: var(--text-primary);
     font-size: 0.95rem;
     font-weight: 300;
     padding-right: 0.5rem;
+    user-select: none;
 }
 
 .product-item.grid-prices .product-price {
@@ -302,6 +301,7 @@ main {
     font-weight: 500;
     font-size: 0.95rem;
     letter-spacing: 0.5px;
+    user-select: none;
 }
 
 .product-item.grid-prices .no-price {
@@ -352,6 +352,61 @@ main {
     color: var(--accent-gold);
     opacity: 0.5;
 }
+
+
+/* --------------------------------------------------- */
+/* --- VENTANA FLOTANTE DE VISTA PREVIA (PEEK & POP) --- */
+/* --------------------------------------------------- */
+.hidden-preview {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translate(-50%, -50%) scale(0.85); /* Efecto de que "crece" al aparecer */
+}
+
+#floating-preview {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 99999;
+    width: 280px;
+}
+
+#floating-preview.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.preview-content {
+    background-color: rgba(21, 26, 34, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--accent-gold);
+    border-radius: 16px;
+    padding: 1.2rem;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+#preview-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+#preview-desc {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.4;
+    margin: 0;
+}
+
 
 /* --- SECCIÓN DE FACTURACIÓN --- */
 .form-card {
@@ -583,7 +638,6 @@ footer {
         width: 160px;
     }
     
-    /* CORRECCIÓN: Menos margen superior también en pantallas grandes */
     .group-title {
         font-size: 2rem;
         margin: 1.5rem 0 1.5rem 0; 
