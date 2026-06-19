@@ -11,18 +11,18 @@
 
 :root {
     /* Paleta de Colores Premium (Dark Slate & Champagne Gold) */
-    --bg-dark: #0b0f15;         /* Fondo azul/carbón ultra profundo */
-    --surface-dark: #151a22;    /* Tarjetas elegantemente oscuras */
-    --surface-light: #1f2632;   /* Inputs y hovers sutiles */
-    --accent-gold: #d4af37;     /* Oro champán clásico y refinado */
-    --accent-green: #81b29a;    /* Verde salvia suave para precios (no lastima la vista) */
-    --text-primary: #f8fafc;    /* Blanco nítido para alta legibilidad */
-    --text-muted: #94a3b8;      /* Gris metálico para descripciones */
-    --border-color: rgba(255, 255, 255, 0.06); /* Líneas divisorias casi transparentes */
+    --bg-dark: #0b0f15;         
+    --surface-dark: #151a22;    
+    --surface-light: #1f2632;   
+    --accent-gold: #d4af37;     
+    --accent-green: #81b29a;    
+    --text-primary: #f8fafc;    
+    --text-muted: #94a3b8;      
+    --border-color: rgba(255, 255, 255, 0.06); 
     
     /* Tipografías */
-    --font-headings: 'Playfair Display', serif; /* Elegancia clásica para títulos */
-    --font-body: 'Inter', sans-serif;           /* Modernidad y claridad para lectura */
+    --font-headings: 'Playfair Display', serif; 
+    --font-body: 'Inter', sans-serif;           
     
     /* Transiciones */
     --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -34,7 +34,6 @@ body {
     color: var(--text-primary);
     padding-top: 60px; 
     overflow-x: hidden;
-    /* Un overlay más oscuro para que el fondo de focos se vea muy sutil y elegante */
     background-image: linear-gradient(rgba(11, 15, 21, 0.92), rgba(11, 15, 21, 0.97)), url('Images/ImagenFondo.jpg');
     background-position: center top;
     background-size: cover;
@@ -121,7 +120,8 @@ h1.titulo {
 
 /* --- CONTENIDO PRINCIPAL Y CUADRÍCULAS --- */
 main {
-    padding: 1.5rem 1rem;
+    /* CORRECCIÓN: Se redujo el padding superior de 1.5rem a 0.5rem para eliminar el hueco */
+    padding: 0.5rem 1rem 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
     min-height: calc(100vh - 200px);
@@ -140,14 +140,17 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* CORRECCIÓN: Títulos de pestaña centrados y con menos margen superior */
 .group-title {
     font-family: var(--font-headings);
     color: var(--text-primary);
     font-size: 1.8rem;
-    margin: 2rem 0 1rem 0;
+    margin: 0.5rem 0 1.5rem 0; /* Se redujo el margen superior de 2rem a 0.5rem */
     font-weight: 500;
     display: flex;
     align-items: center;
+    justify-content: center; /* Esto centra el texto y el icono */
+    text-align: center;
     gap: 0.8rem;
     letter-spacing: 0.5px;
 }
@@ -580,8 +583,9 @@ footer {
         width: 160px;
     }
     
+    /* CORRECCIÓN: Menos margen superior también en pantallas grandes */
     .group-title {
         font-size: 2rem;
-        margin: 3rem 0 1.5rem 0;
+        margin: 1.5rem 0 1.5rem 0; 
     }
 }
