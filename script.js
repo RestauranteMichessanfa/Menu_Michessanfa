@@ -82,65 +82,80 @@ form.addEventListener("submit", async (e) => {
 });
 
 
-// *************** LÓGICA DE VISTA PREVIA (PEEK & POP) ***************
+// *************** LÓGICA DE VISTA PREVIA (PEEK & POP) - ACTUALIZADO ***************
 const floatingPreview = document.getElementById("floating-preview");
 const previewImg = document.getElementById("preview-img");
 const previewDesc = document.getElementById("preview-desc");
 let pressTimer;
+let startX = 0;
+let startY = 0;
 
-// Función para mostrar la ventana flotante
 function showPreview(item) {
     const imgSrc = item.getAttribute("data-img");
     const descText = item.getAttribute("data-desc");
     
-    // Solo mostramos si el producto en el HTML tiene la imagen y la descripción configuradas
     if (imgSrc && descText) {
         previewImg.src = imgSrc;
         previewDesc.textContent = descText;
         floatingPreview.classList.add("active");
-        
-        // Vibración háptica muy sutil al abrir (solo si el celular lo soporta)
-        if (navigator.vibrate) navigator.vibrate(50);
+        if (navigator.vibrate) navigator.vibrate(50); // Vibración sutil
     }
 }
 
-// Función para ocultar la ventana flotante
 function hidePreview() {
     clearTimeout(pressTimer);
     floatingPreview.classList.remove("active");
 }
 
-// 1. Evitar que salga el menú predeterminado del celular al dejar presionado
+// Bloquea el menú contextual en la computadora y algunos celulares
 document.addEventListener("contextmenu", (e) => {
     if (e.target.closest(".product-item[data-img]")) {
         e.preventDefault();
     }
 });
 
-// 2. Eventos Táctiles para el Celular
+// EVENTOS PARA CELULARES (Táctil)
 document.addEventListener("touchstart", (e) => {
     const item = e.target.closest(".product-item");
     if (item && item.hasAttribute("data-img")) {
-        // Empieza a contar: si pasan 400ms y no suelta el dedo, se abre.
-        pressTimer = setTimeout(() => showPreview(item), 400); 
+        // Guardamos la posición inicial donde el usuario puso el dedo
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        
+        // Inicia el tiempo
+        pressTimer = setTimeout(() => showPreview(item), 300); 
     }
 }, { passive: true });
 
-document.addEventListener("touchend", hidePreview); // Al soltar el dedo
-document.addEventListener("touchmove", hidePreview); // Si desliza el dedo para hacer scroll, cancela la acción
+document.addEventListener("touchmove", (e) => {
+    // Solo si la ventana flotante AÚN NO se ha abierto revisamos si está haciendo scroll
+    if (!floatingPreview.classList.contains("active")) {
+        const moveX = Math.abs(e.touches[0].clientX - startX);
+        const moveY = Math.abs(e.touches[0].clientY - startY);
+        
+        // Si movió el dedo más de 15 píxeles rápido (es decir, está bajando en el menú normal)
+        // cancelamos la aparición de la ventana.
+        if (moveX > 15 || moveY > 15) {
+            clearTimeout(pressTimer);
+        }
+    }
+    // SI LA VENTANA YA ESTÁ ABIERTA, no hacemos nada, por lo que no desaparecerá aunque mueva el dedo.
+}, { passive: true });
 
-// 3. Eventos de Ratón (por si alguien lo abre en computadora)
+// Únicamente desaparece cuando se levanta el dedo o se sale de la pantalla
+document.addEventListener("touchend", hidePreview);
+document.addEventListener("touchcancel", hidePreview);
+
+// EVENTOS PARA COMPUTADORA (Ratón)
 document.addEventListener("mousedown", (e) => {
     const item = e.target.closest(".product-item");
     if (item && item.hasAttribute("data-img")) {
-        pressTimer = setTimeout(() => showPreview(item), 400);
+        pressTimer = setTimeout(() => showPreview(item), 300);
     }
 });
 
 document.addEventListener("mouseup", hidePreview);
-document.addEventListener("mousemove", hidePreview);
 // *************** FIN VISTA PREVIA ***************
-
 
 // Render inicial automático con la sección de Comida
 document.addEventListener("DOMContentLoaded", () => {
