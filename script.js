@@ -3,8 +3,18 @@ const facturacionSection = document.getElementById("facturacion");
 const navButtons = document.querySelectorAll(".nav-btn");
 const facturacionLink = document.querySelector(".facturacion-link"); 
 
+// --- VARIABLES DE MEMORIA PARA EL SCROLL ---
+let currentCategory = "comida"; // Categoría inicial por defecto
+const scrollPositions = {};     // Diccionario que guardará las alturas
+
 // Lógica de carga del menú
 async function loadContent(category) {
+    // 1. Guardar la posición de scroll EXACTA de la pestaña actual ANTES de cambiar
+    scrollPositions[currentCategory] = window.scrollY;
+
+    // 2. Actualizar la memoria con la nueva pestaña a la que vamos
+    currentCategory = category;
+
     if (category === "facturacion") {
         facturacionSection.classList.remove("hidden");
         contentContainer.innerHTML = "";
@@ -23,6 +33,15 @@ async function loadContent(category) {
             contentContainer.innerHTML = `<p style="text-align:center; padding:2rem; color:var(--text-muted);">No se pudo establecer conexión para cargar el menú.</p>`;
         }
     }
+
+    // 3. Restaurar el scroll a donde nos quedamos (o hasta arriba si es la primera vez)
+    // Se usa un pequeño Timeout para darle tiempo al navegador de pintar el HTML antes de moverse
+    setTimeout(() => {
+        window.scrollTo({
+            top: scrollPositions[category] !== undefined ? scrollPositions[category] : 0,
+            behavior: 'auto' // Se usa 'auto' (instantáneo) para que no se vea el barrido bajando
+        });
+    }, 10);
 }
 
 // Manejo dinámico de la clase activa en barra de navegación
@@ -46,7 +65,6 @@ navButtons.forEach(button => {
 
 facturacionLink.addEventListener("click", () => {
     handleNavigation("facturacion");
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // *************** Lógica de Facturación (ORIGINAL Y FUNCIONAL) ***************
@@ -82,7 +100,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 
-// *************** LÓGICA DE VISTA PREVIA (PEEK & POP) - ACTUALIZADO ***************
+// *************** LÓGICA DE VISTA PREVIA (PEEK & POP) ***************
 const floatingPreview = document.getElementById("floating-preview");
 const previewImg = document.getElementById("preview-img");
 const previewDesc = document.getElementById("preview-desc");
@@ -107,7 +125,7 @@ function hidePreview() {
     floatingPreview.classList.remove("active");
 }
 
-// Bloquea el menú contextual en la computadora y algunos celulares
+// Bloquea el menú contextual nativo
 document.addEventListener("contextmenu", (e) => {
     if (e.target.closest(".product-item[data-img]")) {
         e.preventDefault();
@@ -118,31 +136,22 @@ document.addEventListener("contextmenu", (e) => {
 document.addEventListener("touchstart", (e) => {
     const item = e.target.closest(".product-item");
     if (item && item.hasAttribute("data-img")) {
-        // Guardamos la posición inicial donde el usuario puso el dedo
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
-        
-        // Inicia el tiempo
         pressTimer = setTimeout(() => showPreview(item), 300); 
     }
 }, { passive: true });
 
 document.addEventListener("touchmove", (e) => {
-    // Solo si la ventana flotante AÚN NO se ha abierto revisamos si está haciendo scroll
     if (!floatingPreview.classList.contains("active")) {
         const moveX = Math.abs(e.touches[0].clientX - startX);
         const moveY = Math.abs(e.touches[0].clientY - startY);
-        
-        // Si movió el dedo más de 15 píxeles rápido (es decir, está bajando en el menú normal)
-        // cancelamos la aparición de la ventana.
         if (moveX > 15 || moveY > 15) {
             clearTimeout(pressTimer);
         }
     }
-    // SI LA VENTANA YA ESTÁ ABIERTA, no hacemos nada, por lo que no desaparecerá aunque mueva el dedo.
 }, { passive: true });
 
-// Únicamente desaparece cuando se levanta el dedo o se sale de la pantalla
 document.addEventListener("touchend", hidePreview);
 document.addEventListener("touchcancel", hidePreview);
 
